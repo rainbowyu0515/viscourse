@@ -1,0 +1,51 @@
+html, body{
+	margin: 0;
+	padding: 0;
+}
+
+body, .cover1::before, .cover2::before{
+	width: 100%;
+	height: 100%;
+	background: url("img/snow_bg.jpg");
+	/*background: url("img/sun_bg.png");*/
+	/*background: url("img/rain_bg.png");*/
+}
+body, .cover1::before{
+	background-position: top left;
+}
+body{
+	background-size: 100% 100%;
+}
+.cover1::before{
+	background-size: 100% auto;
+}
+.cover2::before{
+	background-size: 100% auto;
+	background-position: bottom left;
+}
+
+.cover1, .cover2{
+	width: 100%;
+	position: relative;
+	/*background: hsla(0, 0%, 100%, 0.3);*/
+	background: rgba(200, 200, 200, 0.4);
+	overflow: hidden;
+}
+.cover2::before, .cover1::before{
+	content:'';
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0; 
+	filter: blur(12px);
+}
+.cover1{
+	height:40%;
+}
+.cover2{
+	height:59%;
+}
+
+canvas{
+	position: absolute;
+	top: 0;
+	left:0;
+}

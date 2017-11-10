@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.sound.min.js"></script>
+		<script src="jquery-2.2.3.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<script type="text/javascript">
+			var buttonHeight = 300;
+			var weatherIndex;
+			var weather;
+			var bgColor = new Array("#fff5f5", "#e9f7ff", "#eaf9ea");
+			var bgColorRGB = [[255, 245, 245], [233, 247, 255], [234, 249, 234]];
+			var weatherColor = [
+									[[255,238,238],[255,225,225],[255,189,189],[255,164,164]],
+									[[233,247,255],[201,230,244],[175,216,232],[140,200,224]],
+									[[234,249,234],[215,244,215],[206,226,204],[181,226,166]]
+								];
+			var buttonColor = [
+									[[255,238,238],[255,225,225],[255,204,204],[255,189,189],[255,164,164],[244,130,130],[239,96,96]],
+									[[233,247,255],[201,230,244],[175,216,232],[159,204,226],[140,200,224],[114,184,219],[87,176,211]],
+									[[234,249,234],[223,244,223],[205,247,203],[188,237,185],[177,232,172],[166,224,160],[150,216,143]]
+								]
+
+			var button1, button2, button3, button4, button5, button6, button7;
+			var temp1, temp2, temp3, temp4;
+			var buttonOn = new Array(0, 0, 0, 0, 0, 0, 0);
+		</script>
+		<script src="util.js"></script>
+		<script src="sketch.js"></script>
+	</body>
+</html>
