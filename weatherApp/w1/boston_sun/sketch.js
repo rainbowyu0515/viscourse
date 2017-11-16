@@ -98,7 +98,7 @@ function draw() {
 	text(weather.currently.humidity, 30*zoom, wh*zoom*0.66);
 	text(weather.currently.windSpeed, 30*zoom+ww*zoom/5+60, wh*zoom*0.66);
 	text(weather.currently.visibility, 30*zoom+2*ww*zoom/5+80, wh*zoom*0.66);
-	text("Snowy", 30*zoom+3*ww*zoom/5+40, wh*zoom*0.66);
+	text("Sunny", 30*zoom+3*ww*zoom/5+40, wh*zoom*0.66);
 	fill(200);
 	textSize(30*zoom);
 	text("Hourly forcast of Boston", 20*zoom, wh*zoom*0.75);
