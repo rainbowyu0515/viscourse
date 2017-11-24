@@ -3,21 +3,45 @@
 <head>
 	<title>vis final</title>
 	<style type="text/css">
-		@font-face {  
-		    /* font-properties */  
-		    font-family: HenryMorganHand;  
-		    src:url('font/HenryMorganHand.ttf');
-		}  
-		@font-face {  
-		    /* font-properties */  
-		    font-family: CaviarDreams;  
-		    src:url('font/CaviarDreams.ttf');
+		@font-face {	
+				/* font-properties */	
+				font-family: HenryMorganHand;	
+				src:url('font/HenryMorganHand.ttf');
+		}	
+		@font-face {	
+				/* font-properties */	
+				font-family: CaviarDreams;	
+				src:url('font/CaviarDreams.ttf');
 		} 
-		@font-face {  
-		    /* font-properties */  
-		    font-family: Tugano;  
-		    src:url('font/Tugano.ttf');
+		@font-face {	
+				/* font-properties */	
+				font-family: Tugano;	
+				src:url('font/Tugano.ttf');
 		} 
+
+		::-webkit-scrollbar {
+			width:8px;
+			margin-right:2px
+		}
+		::-webkit-scrollbar:horizontal {
+			height:10px;
+			margin-bottom:2px
+		}
+		::-webkit-scrollbar-track {
+			border-radius: 10px;
+		}
+		::-webkit-scrollbar-track-piece {
+			background-color: #dbdbdb;
+			border-radius: 10px;
+		}
+		::-webkit-scrollbar-thumb {
+			width:6px;
+			border-radius: 5px;
+			background: #afafaf;
+			margin-right: 3px;
+		}
+
+
 		.text_n, .text_b{
 			font-family: "CaviarDreams";
 			font-weight: bold;
@@ -43,17 +67,53 @@
 		.circle{
 			/*fill: green;*/
 		}
+		#main{
+			float: left;
+		}
+		#pieContainer{
+			float:left;
+			width: 800px;
+			height: 1800px;
+			overflow-y: auto;
+		}
 	</style>
 </head>
 <body>
-	<svg width="1800" height="1800"></svg>
+	<svg id = "main" width="1800" height="1800"></svg>
+	<div id="pieContainer"></div>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script type="text/javascript">
-		var colors = new Array("#f1cdd5", "#fde3bf", "#c7e4f1", "#f4e5f8", "#fef7c7");
+		var colors = new Array("#f1cdd5", "#fde3bf", "#c7e4f1");
 		var colorMap = new Map();
 		colorMap.set("United States", colors[2]);
 		colorMap.set("France", colors[1]);
 		colorMap.set("U.K.", colors[0]);
+		var colors2 = new Array("#ef92a7", "#f8b961", "#6bcbf6");
+		var colorMap2 = new Map();
+		colorMap2.set("United States", colors2[2]);
+		colorMap2.set("France", colors2[1]);
+		colorMap2.set("U.K.", colors2[0]);
+		var brandMap = new Map();
+		brandMap.set("Acetificio Marcello Denigris", "A");
+		brandMap.set("Bakery Fresh Goodness, The Kroger Co.", "B");
+		brandMap.set("Diamond", "C");
+		brandMap.set("Emerald", "D");
+		brandMap.set("Emer'Ald", "E");
+		brandMap.set("Ferrero", "F");
+		brandMap.set("Fresh & Easy", "G");
+		brandMap.set("Fresh Food Market", "H");
+		brandMap.set("King Soopers", "I");
+		brandMap.set("Kroger", "J");
+		brandMap.set("Lindt", "K");
+		brandMap.set("Long Grove", "L");
+		brandMap.set("Maplehurst Bakeries", "M");
+		brandMap.set("Private Selection", "N");
+		brandMap.set("Simple Truth", "O");
+		brandMap.set("The Father's Table", "P");
+		brandMap.set("The Kroger Co", "Q");
+		brandMap.set("Trader Joe's", "R");
+		brandMap.set("M&S", "S");
+		brandMap.set("Marks & Spencer", "T");
 
 		var nutritions = new Array("fat", "omega_3_fat", "trans_fat", "cholesterol", "carbohydrates", "sugars", "starch", "polyols", "fiber", "proteins", "serum_proteins", "salt", "sodium", "vitamin_a", "vitamin_c", "iron");
 
@@ -61,12 +121,12 @@
 				margin = {top: 200, right: 10, bottom: 10, left: 70},
 				txtWidth = 200;
 		var g = svg.append("g")
-    		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    	g.selectAll(".text_n").data(nutritions)
-    		.enter()
-    		.append("text")
-    		.attr("class", "text_n")
-    		// .attr("transform", "rotate(-90)")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			g.selectAll(".text_n").data(nutritions)
+				.enter()
+				.append("text")
+				.attr("class", "text_n")
+				// .attr("transform", "rotate(-90)")
 			.attr("x", txtWidth)
 			.attr("y", function(d, i){return 70+margin.top + txtWidth + i*70})
 			.text(function(d){
@@ -87,9 +147,9 @@
 			.attr("x2", 30 + 10 + txtWidth + 1460)
 			.attr("y2", 70 + margin.top + txtWidth + nutritions.length*70);
 		g.selectAll(".grid_y").data(nutritions)
-    		.enter()
-    		.append("line")
-    		.attr("class", "grid")
+				.enter()
+				.append("line")
+				.attr("class", "grid")
 			.attr("x1", 30+10 + txtWidth)
 			.attr("y1", function(d, i){return 70+margin.top + txtWidth + i*70})
 			.attr("x2", 30+10 + txtWidth + 1460)
@@ -147,9 +207,9 @@
 			let energy_range = max_energy - min_energy;
 			let energyArr = new Array(min_energy, energy_range/3 + min_energy, energy_range*2/3 + min_energy, max_energy);
 			g.selectAll(".energy_axis").data(energyArr)
-	    		.enter()
-	    		.append("text")
-	    		.attr("class", "energy_axis")
+					.enter()
+					.append("text")
+					.attr("class", "energy_axis")
 				.attr("x", txtWidth)
 				.attr("y", function(d, i){return margin.top - txtWidth - i*70 + 80})
 				.text(function(d){
@@ -195,9 +255,9 @@
 				recordX += c.num*70;
 			})
 			g.selectAll(".countryRect").data(countryNum)
-	    		.enter()
-	    		.append("rect")
-	    		.attr("class", "countryRect")
+					.enter()
+					.append("rect")
+					.attr("class", "countryRect")
 				.attr("x", - margin.top - txtWidth + 60)
 				.attr("y", function(d, i){return 30 + margin.left + txtWidth + i*70})
 				.text(function(d){
@@ -206,10 +266,10 @@
 				.attr("text-anchor", "start");
 
 			g.selectAll(".text_b").data(data)
-	    		.enter()
-	    		.append("text")
-	    		.attr("class", "text_b")
-	    		.attr("transform", "rotate(-90)")
+					.enter()
+					.append("text")
+					.attr("class", "text_b")
+					.attr("transform", "rotate(-90)")
 				.attr("x", - margin.top - txtWidth + 60)
 				.attr("y", function(d, i){return 30 + margin.left + txtWidth + i*70})
 				.text(function(d){
@@ -234,9 +294,9 @@
 				.attr("x2", 30+margin.left + txtWidth + data.length*70)
 				.attr("y2", 10+margin.top + txtWidth+1180);
 			g.selectAll(".grid_x").data(data)
-	    		.enter()
-	    		.append("line")
-	    		.attr("class", "grid")
+					.enter()
+					.append("line")
+					.attr("class", "grid")
 				.attr("x1", function(d, i){return 30+margin.left + txtWidth + i*70})
 				.attr("y1", 10+margin.top + txtWidth)
 				.attr("x2", function(d, i){return 30+margin.left + txtWidth + i*70})
@@ -246,7 +306,8 @@
 				//draw energy bar
 				let barHeight = 200*(d.avg_energy_100g - min_energy)/(max_energy - min_energy) + 10;
 				g.append("rect")
-					.attr("class", "energy_bar")
+					.attr("id", d.brands + "bar")
+					.attr("class", "energy_bar " + brandMap.get(d.brands))
 					.attr("x", margin.left + txtWidth + i*70)
 					.attr("y", margin.top - txtWidth + 80 - barHeight)
 					.attr("width", 40)
@@ -256,7 +317,7 @@
 				let tmpArr = new Array(d.avg_fat_100g, d.avg_omega_3_fat_100g, d.avg_trans_fat_100g, d.avg_cholesterol_100g, d.avg_carbohydrates_100g, d.avg_sugars_100g, d.avg_starch_100g, d.avg_polyols_100g, d.avg_fiber_100g, d.avg_proteins_100g, d.avg_serum_proteins_100g, d.avg_salt_100g, d.avg_sodium_100g, d.avg_vitamin_a_100g, d.avg_vitamin_c_100g, d.avg_iron_100g);
 				tmpArr.forEach(function(nu, j){
 					g.append("circle")
-						.attr("class", "circle")
+						.attr("class", "circle " + brandMap.get(d.brands))
 						.attr("cx", 30 + margin.left + txtWidth + i*70)
 						.attr("cy", 70 + margin.top + txtWidth + j*70)
 						.attr("r", function(){
@@ -266,15 +327,121 @@
 								return 0;
 							}
 						})
-						.attr("fill", colorMap.get(d.country));
+						.attr("fill", colorMap.get(d.country))
+						.on("mouseover", function(){
+							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap2.get(d.country));
+							// d3.select(this)
+						})
+						.on("mouseout", function(){
+							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap.get(d.country));
+						})
+						.on("click", function(){
+							drawPie(d.products);
+						})						
 				})
 				
 			})
 
 			
-
-			
 		})
+
+		function drawPie(data){
+			//remove all the pies on the web page
+			d3.selectAll(".pie").remove();
+
+			//preprocessing data
+			let pieData = new Array();
+			data.forEach(function(d){
+				let obj = {};
+				obj.pname = d.product_name;
+				obj.fat_100g = d.fat_100g == "null" ? 0 : parseFloat(d.fat_100g);
+				obj.omega_3_fat_100g = d.omega_3_fat_100g == "null" ? 0 : parseFloat(d.omega_3_fat_100g);
+				obj.trans_fat_100g = d.trans_fat_100g == "null" ? 0 : parseFloat(d.trans_fat_100g);
+				obj.cholesterol_100g = d.cholesterol_100g == "null" ? 0 : parseFloat(d.cholesterol_100g);
+				obj.carbohydrates_100g = d.carbohydrates_100g == "null" ? 0 : parseFloat(d.carbohydrates_100g);
+				obj.sugars_100g = d.sugars_100g == "null" ? 0 : parseFloat(d.sugars_100g);
+				obj.starch_100g = d.starch_100g == "null" ? 0 : parseFloat(d.starch_100g);
+				obj.polyols_100g = d.polyols_100g == "null" ? 0 : parseFloat(d.polyols_100g);
+				obj.fiber_100g = d.fiber_100g == "null" ? 0 : parseFloat(d.fiber_100g);
+				obj.proteins_100g = d.proteins_100g == "null" ? 0 : parseFloat(d.proteins_100g);
+				obj.serum_proteins_100g = d.serum_proteins_100g == "null" ? 0 : parseFloat(d.serum_proteins_100g);
+				obj.salt_100g = d.salt_100g == "null" ? 0 : parseFloat(d.salt_100g);
+				obj.sodium_100g = d.sodium_100g == "null" ? 0 : parseFloat(d.sodium_100g);
+				obj.vitamin_a_100g = d.vitamin_a_100g == "null" ? 0 : parseFloat(d.vitamin_a_100g);
+				obj.vitamin_c_100g = d.vitamin_c_100g == "null" ? 0 : parseFloat(d.vitamin_c_100g);
+				obj.iron_100g = d.iron_100g == "null" ? 0 : parseFloat(d.iron_100g);
+				pieData.push(obj);
+			})
+
+			var radius = 74,
+			padding = 10;
+
+			var color = d3.scaleOrdinal()
+					.range(["#8dd3c7", "#8dd3c7", "#8dd3c7", "#fb8072", "#80b1d3", 
+						"#80b1d3", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", 
+						"#ccebc5", "#ffed6f", "#ffffb3", "#bebada", "#bebada", "#fdb462"]);
+
+			var arc = d3.arc()
+					.outerRadius(radius)
+					.innerRadius(radius - 30);
+
+			var pie = d3.pie()
+					.sort(null)
+					.value(function(d) { return d.population; });
+
+			color.domain(d3.keys(pieData[0]).filter(function(key) { return key !== "State"; }));
+
+			pieData.forEach(function(d) {
+				d.nutritions = color.domain().map(function(name) {
+					return {name: name, population: +d[name]};
+				});
+			});
+			if(d3.select("#legend").empty()){
+				var legend = d3.select("body").append("svg")
+						.attr("id", "legend")
+						.attr("class", "legend")
+						.attr("width", 200*4)
+						.attr("height", 20*4)
+					.selectAll("g")
+						.data(color.domain().slice().reverse())
+					.enter().append("g")
+						.attr("transform", function(d, i) { return "translate(" + parseInt(i/4)*200 + "," + i%4 * 20 + ")"; });
+
+				legend.append("rect")
+						.attr("width", 18)
+						.attr("height", 18)
+						.style("fill", color);
+
+				legend.append("text")
+						.attr("x", 24)
+						.attr("y", 9)
+						.attr("dy", ".35em")
+						.text(function(d) { return d; });
+			}
+
+			var svg = d3.select("#pieContainer").selectAll(".pie")
+					.data(pieData)
+				.enter().append("svg")
+					.attr("class", "pie")
+					.attr("width", radius * 2)
+					.attr("height", radius * 2)
+				.append("g")
+					.attr("transform", "translate(" + radius + "," + radius + ")");
+
+			svg.selectAll(".arc")
+					.data(function(d) { return pie(d.nutritions); })
+				.enter().append("path")
+					.attr("class", "arc")
+					.attr("d", arc)
+					.style("fill", function(d) { return color(d.data.name); });
+
+			svg.append("text")
+					.attr("dy", ".35em")
+					.style("text-anchor", "middle")
+					.text(function(d) { return d.State; });
+
+		}
+
 	</script>
 </body>
 </html>
