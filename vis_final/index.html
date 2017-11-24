@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vis final</title>
+	<style type="text/css">
+		@font-face {  
+		    /* font-properties */  
+		    font-family: HenryMorganHand;  
+		    src:url('font/HenryMorganHand.ttf');
+		}  
+		@font-face {  
+		    /* font-properties */  
+		    font-family: CaviarDreams;  
+		    src:url('font/CaviarDreams.ttf');
+		} 
+		@font-face {  
+		    /* font-properties */  
+		    font-family: Tugano;  
+		    src:url('font/Tugano.ttf');
+		} 
+		.text_n, .text_b{
+			font-family: "CaviarDreams";
+			font-weight: bold;
+			font-size: 25px;
+			fill: rgba(150, 150, 150, 1);
+		}
+		.countryName{
+			font-family: "CaviarDreams";
+			font-weight: bold;
+			font-size: 20px;
+			fill: #fff;
+		}
+		.energy_axis{
+			font-family: "CaviarDreams";
+			font-weight: bold;
+			font-size: 20px;
+			fill: rgba(150, 150, 150, 1);
+		}
+		.grid{
+			stroke: rgba(180, 180, 180, 0.1);
+			stroke-width: 2;
+		}
+		.circle{
+			/*fill: green;*/
+		}
+	</style>
+</head>
+<body>
+	<svg width="1800" height="1800"></svg>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script type="text/javascript">
+		var colors = new Array("#f1cdd5", "#fde3bf", "#c7e4f1", "#f4e5f8", "#fef7c7");
+		var colorMap = new Map();
+		colorMap.set("United States", colors[2]);
+		colorMap.set("France", colors[1]);
+		colorMap.set("U.K.", colors[0]);
+
+		var nutritions = new Array("fat", "omega_3_fat", "trans_fat", "cholesterol", "carbohydrates", "sugars", "starch", "polyols", "fiber", "proteins", "serum_proteins", "salt", "sodium", "vitamin_a", "vitamin_c", "iron");
+
+		var svg = d3.select("svg"),
+				margin = {top: 200, right: 10, bottom: 10, left: 70},
+				txtWidth = 200;
+		var g = svg.append("g")
+    		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    	g.selectAll(".text_n").data(nutritions)
+    		.enter()
+    		.append("text")
+    		.attr("class", "text_n")
+    		// .attr("transform", "rotate(-90)")
+			.attr("x", txtWidth)
+			.attr("y", function(d, i){return 70+margin.top + txtWidth + i*70})
+			.text(function(d){
+				return d;
+			})
+			.attr("text-anchor", "end");
+
+		g.append("line")
+			.attr("class", "grid")
+			.attr("x1", 30 + 10 + txtWidth)
+			.attr("y1", 10 + margin.top + txtWidth)
+			.attr("x2", 30 + 10 + txtWidth + 1460)
+			.attr("y2", 10 + margin.top + txtWidth);
+		g.append("line")
+			.attr("class", "grid")
+			.attr("x1", 30 + 10 + txtWidth)
+			.attr("y1", 70 + margin.top + txtWidth + nutritions.length*70)
+			.attr("x2", 30 + 10 + txtWidth + 1460)
+			.attr("y2", 70 + margin.top + txtWidth + nutritions.length*70);
+		g.selectAll(".grid_y").data(nutritions)
+    		.enter()
+    		.append("line")
+    		.attr("class", "grid")
+			.attr("x1", 30+10 + txtWidth)
+			.attr("y1", function(d, i){return 70+margin.top + txtWidth + i*70})
+			.attr("x2", 30+10 + txtWidth + 1460)
+			.attr("y2", function(d, i){return 70+margin.top + txtWidth + i*70});
+
+		d3.json("food_final.json", function(error, data){
+			if(error) throw error;
+
+			console.log(data);
+			let max_energy = d3.max(data, function(d){return d.avg_energy_100g});
+			let min_energy = d3.min(data, function(d){return d.avg_energy_100g});
+			let max_fat = d3.max(data, function(d){return d.avg_fat_100g});
+			let min_fat = d3.min(data, function(d){return d.avg_fat_100g});
+			let max_O3 = d3.max(data, function(d){return d.avg_omega_3_fat_100g});
+			let min_O3 = d3.min(data, function(d){return d.avg_omega_3_fat_100g});
+			let max_tfat = d3.max(data, function(d){return d.avg_trans_fat_100g});
+			let min_tfat = d3.min(data, function(d){return d.avg_trans_fat_100g});
+			let max_cholesterol = d3.max(data, function(d){return d.avg_cholesterol_100g});
+			let min_cholesterol = d3.min(data, function(d){return d.avg_cholesterol_100g});
+			let max_carbohydrates = d3.max(data, function(d){return d.avg_carbohydrates_100g});
+			let min_carbohydrates = d3.min(data, function(d){return d.avg_carbohydrates_100g});
+			let max_sugars = d3.max(data, function(d){return d.avg_sugars_100g});
+			let min_sugars = d3.min(data, function(d){return d.avg_sugars_100g});
+			let max_starch = d3.max(data, function(d){return d.avg_starch_100g});
+			let min_starch = d3.min(data, function(d){return d.avg_starch_100g});
+			let max_polyols = d3.max(data, function(d){return d.avg_polyols_100g});
+			let min_polyols = d3.min(data, function(d){return d.avg_polyols_100g});
+			let max_fiber = d3.max(data, function(d){return d.avg_fiber_100g});
+			let min_fiber = d3.min(data, function(d){return d.avg_fiber_100g});
+			let max_proteins = d3.max(data, function(d){return d.avg_proteins_100g});
+			let min_proteins = d3.min(data, function(d){return d.avg_proteins_100g});
+			let max_sprotein = d3.max(data, function(d){return d.avg_serum_proteins_100g});
+			let min_sprotein = d3.min(data, function(d){return d.avg_serum_proteins_100g});
+			let max_salt = d3.max(data, function(d){return d.avg_salt_100g});
+			let min_salt = d3.min(data, function(d){return d.avg_salt_100g});
+			let max_sodium = d3.max(data, function(d){return d.avg_sodium_100g});
+			let min_sodium = d3.min(data, function(d){return d.avg_sodium_100g});
+			let max_va = d3.max(data, function(d){return d.avg_vitamin_a_100g});
+			let min_va = d3.min(data, function(d){return d.avg_vitamin_a_100g});
+			let max_vc = d3.max(data, function(d){return d.avg_vitamin_c_100g});
+			let min_vc = d3.min(data, function(d){return d.avg_vitamin_c_100g});
+			let max_iron = d3.max(data, function(d){return d.avg_iron_100g});
+			let min_iron = d3.min(data, function(d){return d.avg_iron_100g});
+			let max_nutri = new Array(max_fat, max_O3, max_tfat, max_cholesterol, max_carbohydrates, max_sugars, max_starch, max_polyols, max_fiber, max_proteins, max_sprotein, max_salt, max_sodium, max_va, max_vc, max_iron);
+			let min_nutri = new Array(min_fat, min_O3, min_tfat, min_cholesterol, min_carbohydrates, min_sugars, min_starch, min_polyols, min_fiber, min_proteins, min_sprotein, min_salt, min_sodium, min_va, min_vc, min_iron);
+
+			//draw the axis for the barchart
+			g.append("line")
+				.attr("class", "grid")
+				.attr("x1", margin.left+ txtWidth-30)
+				.attr("y1", margin.top - 120)
+				.attr("x2", margin.left+ txtWidth + data.length*70+35)
+				.attr("y2", margin.top - 120)
+
+			let energy_range = max_energy - min_energy;
+			let energyArr = new Array(min_energy, energy_range/3 + min_energy, energy_range*2/3 + min_energy, max_energy);
+			g.selectAll(".energy_axis").data(energyArr)
+	    		.enter()
+	    		.append("text")
+	    		.attr("class", "energy_axis")
+				.attr("x", txtWidth)
+				.attr("y", function(d, i){return margin.top - txtWidth - i*70 + 80})
+				.text(function(d){
+					return parseInt(d*100)/100;
+				})
+				.attr("text-anchor", "end");
+
+			//statistic for the country
+			let countryNum = new Array(
+				{"name":"United States","num":18}, 
+				{"name":"France","num":1}, 
+				{"name":"U.K.","num":1}
+			);
+			let recordX = margin.left+ txtWidth;
+			g.append("rect")
+				.attr("class", "countryRect")
+				.attr("x", margin.left+ txtWidth-30)
+				.attr("y", margin.top + txtWidth - 45)
+				.attr("width", 40)
+				.attr("height", 45)
+				.attr("fill", colorMap.get(countryNum[0].name));
+			g.append("rect")
+				.attr("class", "countryRect")
+				.attr("x", recordX + data.length*70-10)
+				.attr("y", margin.top + txtWidth - 45)
+				.attr("width", 40)
+				.attr("height", 45)
+				.attr("fill", colorMap.get(countryNum[countryNum.length-1].name));
+			countryNum.forEach(function(c, i){
+				g.append("rect")
+					.attr("class", "countryRect")
+					.attr("x", recordX)
+					.attr("y", margin.top + txtWidth - 45)
+					.attr("width", c.num*70)
+					.attr("height", 45)
+					.attr("fill", colorMap.get(c.name));
+				g.append("text")
+					.attr("class", "countryName")
+					.attr("x", recordX + c.num*70/2)
+					.attr("y", margin.top + txtWidth - 15)
+					.text(c.name)
+					.attr("text-anchor", "middle");
+				recordX += c.num*70;
+			})
+			g.selectAll(".countryRect").data(countryNum)
+	    		.enter()
+	    		.append("rect")
+	    		.attr("class", "countryRect")
+				.attr("x", - margin.top - txtWidth + 60)
+				.attr("y", function(d, i){return 30 + margin.left + txtWidth + i*70})
+				.text(function(d){
+					return d.brands;
+				})
+				.attr("text-anchor", "start");
+
+			g.selectAll(".text_b").data(data)
+	    		.enter()
+	    		.append("text")
+	    		.attr("class", "text_b")
+	    		.attr("transform", "rotate(-90)")
+				.attr("x", - margin.top - txtWidth + 60)
+				.attr("y", function(d, i){return 30 + margin.left + txtWidth + i*70})
+				.text(function(d){
+					if(d.brands.length > 12){
+						return d.brands.substring(0, 12) + "...";
+					}else{
+						return d.brands;
+					}
+				})
+				.attr("text-anchor", "start");
+
+			g.append("line")
+				.attr("class", "grid")
+				.attr("x1", -30+margin.left + txtWidth)
+				.attr("y1", 10+margin.top + txtWidth)
+				.attr("x2", -30+margin.left + txtWidth)
+				.attr("y2", 10+margin.top + txtWidth+1180);
+			g.append("line")
+				.attr("class", "grid")
+				.attr("x1", 30+margin.left + txtWidth + data.length*70)
+				.attr("y1", 10+margin.top + txtWidth)
+				.attr("x2", 30+margin.left + txtWidth + data.length*70)
+				.attr("y2", 10+margin.top + txtWidth+1180);
+			g.selectAll(".grid_x").data(data)
+	    		.enter()
+	    		.append("line")
+	    		.attr("class", "grid")
+				.attr("x1", function(d, i){return 30+margin.left + txtWidth + i*70})
+				.attr("y1", 10+margin.top + txtWidth)
+				.attr("x2", function(d, i){return 30+margin.left + txtWidth + i*70})
+				.attr("y2", 10+margin.top + txtWidth+1180);
+
+			data.forEach(function(d, i){
+				//draw energy bar
+				let barHeight = 200*(d.avg_energy_100g - min_energy)/(max_energy - min_energy) + 10;
+				g.append("rect")
+					.attr("class", "energy_bar")
+					.attr("x", margin.left + txtWidth + i*70)
+					.attr("y", margin.top - txtWidth + 80 - barHeight)
+					.attr("width", 40)
+					.attr("height", barHeight)
+					.attr("fill", colorMap.get(d.country));
+
+				let tmpArr = new Array(d.avg_fat_100g, d.avg_omega_3_fat_100g, d.avg_trans_fat_100g, d.avg_cholesterol_100g, d.avg_carbohydrates_100g, d.avg_sugars_100g, d.avg_starch_100g, d.avg_polyols_100g, d.avg_fiber_100g, d.avg_proteins_100g, d.avg_serum_proteins_100g, d.avg_salt_100g, d.avg_sodium_100g, d.avg_vitamin_a_100g, d.avg_vitamin_c_100g, d.avg_iron_100g);
+				tmpArr.forEach(function(nu, j){
+					g.append("circle")
+						.attr("class", "circle")
+						.attr("cx", 30 + margin.left + txtWidth + i*70)
+						.attr("cy", 70 + margin.top + txtWidth + j*70)
+						.attr("r", function(){
+							if(nu != null && nu != 0){
+								return 35*(nu - min_nutri[j])/(max_nutri[j] - min_nutri[j]);
+							}else{
+								return 0;
+							}
+						})
+						.attr("fill", colorMap.get(d.country));
+				})
+				
+			})
+
+			
+
+			
+		})
+	</script>
+</body>
+</html>
