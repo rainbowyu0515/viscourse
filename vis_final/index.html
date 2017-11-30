@@ -2,87 +2,34 @@
 <html>
 <head>
 	<title>vis final</title>
-	<style type="text/css">
-		@font-face {	
-				/* font-properties */	
-				font-family: HenryMorganHand;	
-				src:url('font/HenryMorganHand.ttf');
-		}	
-		@font-face {	
-				/* font-properties */	
-				font-family: CaviarDreams;	
-				src:url('font/CaviarDreams.ttf');
-		} 
-		@font-face {	
-				/* font-properties */	
-				font-family: Tugano;	
-				src:url('font/Tugano.ttf');
-		} 
-
-		::-webkit-scrollbar {
-			width:8px;
-			margin-right:2px
-		}
-		::-webkit-scrollbar:horizontal {
-			height:10px;
-			margin-bottom:2px
-		}
-		::-webkit-scrollbar-track {
-			border-radius: 10px;
-		}
-		::-webkit-scrollbar-track-piece {
-			background-color: #dbdbdb;
-			border-radius: 10px;
-		}
-		::-webkit-scrollbar-thumb {
-			width:6px;
-			border-radius: 5px;
-			background: #afafaf;
-			margin-right: 3px;
-		}
-
-
-		.text_n, .text_b{
-			font-family: "CaviarDreams";
-			font-weight: bold;
-			font-size: 25px;
-			fill: rgba(150, 150, 150, 1);
-		}
-		.countryName{
-			font-family: "CaviarDreams";
-			font-weight: bold;
-			font-size: 20px;
-			fill: #fff;
-		}
-		.energy_axis{
-			font-family: "CaviarDreams";
-			font-weight: bold;
-			font-size: 20px;
-			fill: rgba(150, 150, 150, 1);
-		}
-		.grid{
-			stroke: rgba(180, 180, 180, 0.1);
-			stroke-width: 2;
-		}
-		.circle{
-			/*fill: green;*/
-		}
-		#main{
-			float: left;
-		}
-		#pieContainer{
-			float:left;
-			width: 800px;
-			height: 1800px;
-			overflow-y: auto;
-		}
-	</style>
+	<link href="style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
 	<svg id = "main" width="1800" height="1800"></svg>
-	<div id="pieContainer"></div>
+	<div id="cover">
+		<div id="pieContainer">
+			<div style="font-size: 30px; font-weight: bold;padding: 20px;">These are the food products contained in the brand you selected. Each pie chart represents the propotion of the nutritions of one food product.</div><br/><br/>
+
+			<h1 id="brand-title" style="font-weight: bold; color: rgb(50, 50, 50); text-align: center;"></h1>
+			<div id="close">X</div>
+		</div>
+	</div>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script type="text/javascript">
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		var pieContainer = document.getElementById("pieContainer");
+		pieContainer.style.top = height/10 + "px";
+		pieContainer.style.left = width/10 + "px";
+		pieContainer.style.width = 8*width/10 + "px";
+		pieContainer.style.height = 8*height/10 + "px";
+		var closeButton = document.getElementById("close");
+		closeButton.style.top = "5px";
+		closeButton.style.left = 8*width/10 - 55 + "px";
+		closeButton.onclick = function(){
+			document.getElementById("cover").style.display = "none";
+		}
+
 		var colors = new Array("#f1cdd5", "#fde3bf", "#c7e4f1");
 		var colorMap = new Map();
 		colorMap.set("United States", colors[2]);
@@ -120,9 +67,10 @@
 		var svg = d3.select("svg"),
 				margin = {top: 200, right: 10, bottom: 10, left: 70},
 				txtWidth = 200;
+
 		var g = svg.append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-			g.selectAll(".text_n").data(nutritions)
+		g.selectAll(".text_n").data(nutritions)
 				.enter()
 				.append("text")
 				.attr("class", "text_n")
@@ -132,6 +80,13 @@
 			.text(function(d){
 				return d;
 			})
+			.attr("text-anchor", "end");
+
+		g.append("text")
+			.attr("class", "axis-title")
+			.attr("x", txtWidth)
+			.attr("y", margin.top + txtWidth + 20)
+			.text("NUTRITION")
 			.attr("text-anchor", "end");
 
 		g.append("line")
@@ -158,7 +113,6 @@
 		d3.json("food_final.json", function(error, data){
 			if(error) throw error;
 
-			console.log(data);
 			let max_energy = d3.max(data, function(d){return d.avg_energy_100g});
 			let min_energy = d3.min(data, function(d){return d.avg_energy_100g});
 			let max_fat = d3.max(data, function(d){return d.avg_fat_100g});
@@ -203,6 +157,30 @@
 				.attr("y1", margin.top - 120)
 				.attr("x2", margin.left+ txtWidth + data.length*70+35)
 				.attr("y2", margin.top - 120)
+
+			g.append("text")
+				.attr("x", margin.left - 10)
+				.attr("y", -margin.top/6)
+				.attr("class", "chart-name")
+				.style("text-anchor", "middle")
+				.append('tspan')
+				.attr('x', 0)
+				.attr('dy', 0)
+				.text(function(d) { 
+					return "ENERGY";
+				})
+				.append('tspan')
+				.attr('x', 0)
+				.attr('dy', 30)
+				.text(function(d) { 
+					return "OF";
+				})
+				.append('tspan')
+				.attr('x', 0)
+				.attr('dy', 30)
+				.text(function(d) { 
+					return "BEANDS";
+				});
 
 			let energy_range = max_energy - min_energy;
 			let energyArr = new Array(min_energy, energy_range/3 + min_energy, energy_range*2/3 + min_energy, max_energy);
@@ -263,6 +241,14 @@
 				.text(function(d){
 					return d.brands;
 				})
+				.attr("text-anchor", "start");
+
+			g.append("text")
+				.attr("class", "axis-title")
+				.attr("transform", "rotate(-90)")
+				.attr("x", - margin.top - txtWidth + 60)
+				.attr("y", margin.top + 40)
+				.text("BRANDS")
 				.attr("text-anchor", "start");
 
 			g.selectAll(".text_b").data(data)
@@ -336,6 +322,7 @@
 							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap.get(d.country));
 						})
 						.on("click", function(){
+							document.getElementById("brand-title").innerHTML = "Brand: "+d.brands;
 							drawPie(d.products);
 						})						
 				})
@@ -346,6 +333,8 @@
 		})
 
 		function drawPie(data){
+			document.getElementById("cover").style.display = "block";
+
 			//remove all the pies on the web page
 			d3.selectAll(".pie").remove();
 
@@ -397,7 +386,7 @@
 				});
 			});
 			if(d3.select("#legend").empty()){
-				var legend = d3.select("body").append("svg")
+				var legend = d3.select("pieContainer").append("svg")
 						.attr("id", "legend")
 						.attr("class", "legend")
 						.attr("width", 200*4)
@@ -436,9 +425,64 @@
 					.style("fill", function(d) { return color(d.data.name); });
 
 			svg.append("text")
-					.attr("dy", ".35em")
+					.attr("dy", "-.15em")
 					.style("text-anchor", "middle")
-					.text(function(d) { return d.State; });
+					// .text(function(d) {
+					// 	return "aaa\naaa";
+					// 	// console.log(d); return d.pname; 
+					// });
+					.append('tspan')
+					.attr('x', 0)
+					.attr('dy', 0)
+					.text(function(d) { 
+						let tmp = d.pname.split(" ");
+						return tmp[0]; 
+					})
+					.append('tspan')
+					.attr('x', 0)
+					.attr('dy', 14)
+					.text(function(d) { 
+						let tmp = d.pname.split(" ");
+						let tmp2 = new Array();
+						for(let i = 0; i < tmp.length; i++){
+							if(tmp[i] != ""){
+								tmp2.push(tmp[i]);
+							}
+						}
+						if(tmp2.length >= 2){
+							return tmp2[1];	
+						}
+					})
+					.append('tspan')
+					.attr('x', 0)
+					.attr('dy', 14)
+					.text(function(d) { 
+						let tmp = d.pname.split(" ");
+						let tmp2 = new Array();
+						for(let i = 0; i < tmp.length; i++){
+							if(tmp[i] != " "){
+								tmp2.push(tmp[i]);
+							}
+						}
+						if(tmp2.length >= 3){
+							return tmp2[2];	
+						}
+					})
+					.append('tspan')
+					.attr('x', 0)
+					.attr('dy', 14)
+					.text(function(d) { 
+						let tmp = d.pname.split(" ");
+						let tmp2 = new Array();
+						for(let i = 0; i < tmp.length; i++){
+							if(tmp[i] != ""){
+								tmp2.push(tmp[i]);
+							}
+						}
+						if(tmp2.length >= 4){
+							return "...";	
+						}
+					})
 
 		}
 
