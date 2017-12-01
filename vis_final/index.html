@@ -29,9 +29,11 @@
 		pieContainer.style.width = 8*width/10 + "px";
 		pieContainer.style.height = 8*height/10 + "px";
 		var closeButton = document.getElementById("close");
+		console.log(closeButton);	
 		closeButton.style.top = "5px";
 		closeButton.style.left = 8*width/10 - 55 + "px";
 		closeButton.onclick = function(){
+			console.log("dsads");
 			document.getElementById("cover").style.display = "none";
 		}
 
@@ -322,7 +324,6 @@
 						.on("mouseover", function(){
 							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap2.get(d.country));
 							
-							console.log(d);
 							drawBrandPie(d);
 
 							d3.select("#tooltip")
@@ -404,7 +405,8 @@
 				var legend = d3.select("#pieContainer").append("svg")
 						.attr("id", "legend")
 						.attr("class", "legend")
-						.attr("width", 200*4)
+						.style("margin-bottom", "30px")
+						.attr("width", "100%")
 						.attr("height", 20*4)
 					.selectAll("g")
 						.data(color.domain().slice().reverse())
@@ -422,7 +424,6 @@
 						.attr("dy", ".35em")
 						.text(function(d) { return d; });
 
-				document.getElementById("pieContainer").innerHTML += "<br/><br/>";
 			}
 
 			var svg = d3.select("#pieContainer").selectAll(".pie")
@@ -567,7 +568,6 @@
 			    .duration(300)
 			    .attrTween("d", tweenDonut);
 
-			console.log(brandPieData);
 
 		   var legend = d3.select("#tooltip").append("svg")
 					.attr("id", "brandPieLegend")
