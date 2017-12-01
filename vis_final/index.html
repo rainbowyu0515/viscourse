@@ -5,6 +5,11 @@
 	<link href="style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
+	<div id="tooltip" class="hidden">
+	    <p><span id="value"></p>
+	    <svg id="brandPie" width="200" height="200"></svg>
+	</div>
+
 	<svg id = "main" width="1800" height="1800"></svg>
 	<div id="cover">
 		<div id="pieContainer">
@@ -64,7 +69,7 @@
 
 		var nutritions = new Array("fat", "omega_3_fat", "trans_fat", "cholesterol", "carbohydrates", "sugars", "starch", "polyols", "fiber", "proteins", "serum_proteins", "salt", "sodium", "vitamin_a", "vitamin_c", "iron");
 
-		var svg = d3.select("svg"),
+		var svg = d3.select("#main"),
 				margin = {top: 200, right: 10, bottom: 10, left: 70},
 				txtWidth = 200;
 
@@ -316,10 +321,20 @@
 						.attr("fill", colorMap.get(d.country))
 						.on("mouseover", function(){
 							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap2.get(d.country));
-							// d3.select(this)
+							
+							console.log(d);
+							drawBrandPie(d);
+
+							d3.select("#tooltip")
+								 .style("left", (d3.event.pageX+10) + "px")
+								 .style("top", (d3.event.pageY-10) + "px")
+								 .select("#value")
+								 .text("lables:");
+							d3.select("#tooltip").classed("hidden", false);
 						})
 						.on("mouseout", function(){
 							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap.get(d.country));
+							d3.select("#tooltip").classed("hidden", true);
 						})
 						.on("click", function(){
 							document.getElementById("brand-title").innerHTML = "Brand: "+d.brands;
@@ -386,7 +401,7 @@
 				});
 			});
 			if(d3.select("#legend").empty()){
-				var legend = d3.select("pieContainer").append("svg")
+				var legend = d3.select("#pieContainer").append("svg")
 						.attr("id", "legend")
 						.attr("class", "legend")
 						.attr("width", 200*4)
@@ -406,6 +421,8 @@
 						.attr("y", 9)
 						.attr("dy", ".35em")
 						.text(function(d) { return d; });
+
+				document.getElementById("pieContainer").innerHTML += "<br/><br/>";
 			}
 
 			var svg = d3.select("#pieContainer").selectAll(".pie")
@@ -484,6 +501,106 @@
 						}
 					})
 
+		}
+
+		function drawBrandPie(inputData){
+			let brandPieData = new Array();
+			brandPieData.push({nName:"avg_carbohydrates_100g",propotion:inputData.avg_carbohydrates_100g});
+			brandPieData.push({nName:"avg_cholesterol_100g",propotion:inputData.avg_cholesterol_100g});
+			brandPieData.push({nName:"avg_fat_100g",propotion:inputData.avg_fat_100g});
+			brandPieData.push({nName:"avg_fiber_100g",propotion:inputData.avg_fiber_100g});
+			brandPieData.push({nName:"avg_iron_100g",propotion:inputData.avg_iron_100g});
+			brandPieData.push({nName:"avg_omega_3_fat_100g",propotion:inputData.avg_omega_3_fat_100g});
+			brandPieData.push({nName:"avg_polyols_100g",propotion:inputData.avg_polyols_100g});
+			brandPieData.push({nName:"avg_proteins_100g",propotion:inputData.avg_proteins_100g});
+			brandPieData.push({nName:"avg_salt_100g",propotion:inputData.avg_salt_100g});
+			brandPieData.push({nName:"avg_serum_proteins_100g",propotion:inputData.avg_serum_proteins_100g});
+			brandPieData.push({nName:"avg_sodium_100g",propotion:inputData.avg_sodium_100g});
+			brandPieData.push({nName:"avg_starch_100g",propotion:inputData.avg_starch_100g});
+			brandPieData.push({nName:"avg_sugars_100g",propotion:inputData.avg_sugars_100g});
+			brandPieData.push({nName:"avg_trans_fat_100g",propotion:inputData.avg_trans_fat_100g});
+			brandPieData.push({nName:"avg_vitamin_a_100g",propotion:inputData.avg_vitamin_a_100g});
+			brandPieData.push({nName:"avg_vitamin_c_100g",propotion:inputData.avg_vitamin_c_100g});
+			
+			var width = 200,
+			    height = 200,
+			    radius = Math.min(width, height) / 2 - 10;
+
+			//var data = d3.range(10).map(Math.random).sort(d3.descending);
+
+			var color = d3.scaleOrdinal()
+					.range(["#fccde5", "#d9d9d9", "#bc80bd","#8dd3c7", "#8dd3c7", "#8dd3c7", "#fb8072", "#80b1d3", 
+						"#80b1d3", "#b3de69",  
+						"#ccebc5", "#ffed6f", "#ffffb3", "#bebada", "#bebada", "#fdb462"]);
+
+			var arc = d3.arc()
+			    .outerRadius(radius);
+
+			var pie = d3.pie()
+					.sort(null)
+					.value(function(d) { return d.propotion; });
+
+			d3.select("#brandPie").selectAll("*").remove();
+			d3.select("#brandPieLegend").remove();
+
+			var svg = d3.select("#brandPie")
+			    .datum(brandPieData)
+			    .attr("width", width)
+			    .attr("height", height)
+			  .append("g")
+			    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+			var arcs = svg.selectAll("g.arc")
+			    .data(pie)
+			  .enter().append("g")
+			    .attr("class", "arc");
+
+			arcs.append("path")
+			    .attr("fill", function(d, i) { return color(i); })
+			  .transition()
+			    .ease(d3.easeLinear)
+			    .duration(500)
+			    .attrTween("d", tweenPie)
+			  .transition()
+			    .ease(d3.easeLinear)
+			    .delay(function(d, i) { return 100 + i * 10; })
+			    .duration(300)
+			    .attrTween("d", tweenDonut);
+
+			console.log(brandPieData);
+
+		   var legend = d3.select("#tooltip").append("svg")
+					.attr("id", "brandPieLegend")
+					.attr("class", "legend")
+					.attr("width", 200)
+					.attr("height", 20*16)
+				.selectAll("g")
+					.data(brandPieData)
+				.enter().append("g")
+					.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+			legend.append("rect")
+					.attr("width", 18)
+					.attr("height", 18)
+					.style("fill", function(d, i){return color(i);});
+
+			legend.append("text")
+					.attr("x", 24)
+					.attr("y", 9)
+					.attr("dy", ".35em")
+					.text(function(d) { return d.nName; });
+
+			function tweenPie(b) {
+			  b.innerRadius = 0;
+			  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+			  return function(t) { return arc(i(t)); };
+			}
+
+			function tweenDonut(b) {
+			  b.innerRadius = radius * .6;
+			  var i = d3.interpolate({innerRadius: 0}, b);
+			  return function(t) { return arc(i(t)); };
+			}
 		}
 
 	</script>
