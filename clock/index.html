@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Clocks</title>
+	<style type="text/css">
+		@font-face {	
+				/* font-properties */	
+				font-family: HenryMorganHand;	
+				src:url('font/HenryMorganHand.ttf');
+		}	
+		@font-face {	
+				/* font-properties */	
+				font-family: CaviarDreams;	
+				src:url('font/CaviarDreams.ttf');
+		} 
+		@font-face {	
+				/* font-properties */	
+				font-family: Tugano;	
+				src:url('font/Tugano.ttf');
+		} 
+
+		html, body{
+			margin: 0;
+			padding: 0;
+			background: #efefef;
+		}
+		iframe{
+			float: left;
+			width: 710px;
+			height: 540px;
+			border: none;
+			overflow: hidden;
+		}
+		hr{
+			width: 85%;
+
+		}
+		.title{
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 50px;
+			box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.5);
+			background: #3f3f3f;
+			color: #fff;
+			font-family: CaviarDreams;
+			font-size: 25px;
+			line-height: 50px;
+			font-weight: bold;
+		}
+		.content{
+			width: 85%;
+			min-width: 1030px;
+			margin: 0 auto;
+			margin-top: 50px;
+			box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+			background: #fff;
+		}
+		.content-block{
+			width: 100%;
+			height: 540px;
+			padding: 10px;
+		}
+		.explain{
+			float: left;
+			width: 280px;
+			height: 460px;
+			padding: 40px 10px;
+			display: block;
+			font-size: 20px;
+			line-height: 25px;
+			word-break:break-word;
+			color: #666;
+		}
+	</style>
+</head>
+	<body>
+		<div class="title">&nbsp&nbsp&nbsp&nbspCLOCKS</div>
+		<div class="content">
+			<div class="content-block">
+				<iframe src="clock6/index.html"></iframe>
+				<div class="explain">
+					In this clock design. I use diagonal lines of square as axis to show intertwined time. Both diagonal lines are devided into 60 cells, one digonal line shows the change of seconds and the other show the minutes. The whole square is sliced into 12 pieces and each one of them represent one hour, the past hours will be colored while the remaining hours of the day will remain white. During one day, the whole animation will run two cycles. 
+				</div>
+			</div>
+			<div class="content-block" style="width: 96%; background: #eee; margin: 0 auto;">
+				
+				<iframe src="clock9/index.html" style="float:right;"></iframe>
+				<div class="explain" style="float: right; text-align:right; color: #222;">
+					This clocks works pretty much like our traditional clock. Hour, minute and second are represnted using three concentric atcs, the innermost one with deepest color shows the change in seconds, the middle one in minutes and the outmost one in hours, like the upper design, the outmost donut is sliced into 12 arcs, so the whole animation will also run two cycles in one day.
+				</div>
+			</div>
+			<div class="content-block">
+				<iframe src="clock11/index.html"></iframe>
+				<div class="explain">
+					This one is the most complex one in my design. The circle is devided into 144 cells, 24 cells for hour, 60 for minute and the other 60 for second. The ticks are different in length so that users can read the time easily. The cells for hour are colored in red, for minute are colored in yellow and for second are colored in blue. The current time can be read clockwise and they are connect with two thin arcs.
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
