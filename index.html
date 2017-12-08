@@ -22,6 +22,8 @@
 			margin: 0;
 			padding: 0;
 			background: #efefef;
+			width: 100%;
+			height: 100%;
 		}
 		.title{
 			position: fixed;
@@ -37,18 +39,71 @@
 			line-height: 50px;
 			font-weight: bold;
 		}
-		ul{
-			margin-top: 100px;
+		.main{
+			display: block;
+			margin-left: 100px;
+		}
+		li{
+			display:block;
+			clear:both;
+			float: left;
+			width: 800px;
+			height: 40px;
+			padding: 5px;
+			border-radius: 15px;
+			background: #666;
+			color: #fff;
+			font-size: 20px;
+			line-height: 40px;
+			margin-top: 20px;
+			box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+		}
+		li:hover{
+			background: #999;
+		}
+		.child{
+			width: 700px;
+			background: #999;
+		}
+		.child:hover{
+			background: #eee;
+		}
+		a{
+			text-decoration: none;
+			display: block;
+			color: #fff;
+		}
+		a:hover{
+			color: #333;
+		}
+		.content{
+			width: 85%;
+			height: 100%;
+			min-width: 1030px;
+			margin: 0 auto;
+			margin-top: 50px;
+			box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+			background: #fff;
 		}
 	</style>
 </head>
 <body>
 	<div class="title">&nbsp&nbsp&nbsp&nbspVIS COURSE FINAL PRESENTATION</div>
-	<ul>
-	<li><a href="https://rainbowyu0515.github.io/viscourse/clock/">Clock</a>
-	<li><a href="https://rainbowyu0515.github.io/viscourse/weatherApp/w1/boston_snow/">Weather</a></li>
-	<li><a href="https://rainbowyu0515.github.io/viscourse/census_new/">Census</a></li>
-	<li><a href="https://rainbowyu0515.github.io/viscourse/vis_final/">Own</a></li>
-	</ul>
+	<div class="content">
+		<br><br><br><br><br>
+		<ul class="main">
+			<li><a href="https://rainbowyu0515.github.io/viscourse/clock/">&nbsp&nbsp&nbsp&nbsp1. Clock</a>
+			<li><a href="#">&nbsp&nbsp&nbsp&nbsp2. Weather</a>
+				<ul style="margin-top: 10px;">
+					<li class="child"><a href="https://rainbowyu0515.github.io/viscourse/weatherApp/w1/boston_snow/">&nbsp&nbsp&nbsp&nbspSnowy weather in Boston</a></li>
+					<li class="child"><a href="https://rainbowyu0515.github.io/viscourse/weatherApp/w1/boston_sun/">&nbsp&nbsp&nbsp&nbspSunny weather in Boston</a></li>
+					<li class="child"><a href="https://rainbowyu0515.github.io/viscourse/weatherApp/w1/boston_rain/">&nbsp&nbsp&nbsp&nbspRainy weather in Boston</a></li>
+				</ul>
+			</li>
+			<li style="margin-top: 240px"><a href="https://rainbowyu0515.github.io/viscourse/census_new/">&nbsp&nbsp&nbsp&nbsp3. Census</a></li>
+			<li><a href="https://rainbowyu0515.github.io/viscourse/vis_final/">&nbsp&nbsp&nbsp&nbsp4. Own</a></li>
+		</ul>
+	</div>
+		
 </body>
 </html>
