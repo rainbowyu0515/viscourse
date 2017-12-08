@@ -15,7 +15,9 @@ function dashStroke(d1, d2){
 }
 
 function setup(){
-	createCanvas(1024, 768);
+	createCanvas(1024, 768);var canvas = document.getElementById("defaultCanvas0");
+	canvas.style.width = "682px";
+	canvas.style.height = "512px";
 	cx = width/2;
 	cy = height/2;
 }
