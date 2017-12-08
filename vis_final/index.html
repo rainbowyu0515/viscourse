@@ -186,7 +186,7 @@
 				.attr('x', 0)
 				.attr('dy', 30)
 				.text(function(d) { 
-					return "BEANDS";
+					return "BRANDS";
 				});
 
 			let energy_range = max_energy - min_energy;
@@ -324,7 +324,7 @@
 						.on("mouseover", function(){
 							d3.selectAll("."+brandMap.get(d.brands)).attr("fill", colorMap2.get(d.country));
 							
-							drawBrandPie(d);
+							drawBrandPie(d, j);
 
 							d3.select("#tooltip")
 								 .style("left", (d3.event.pageX+10) + "px")
@@ -505,24 +505,24 @@
 
 		}
 
-		function drawBrandPie(inputData){
+		function drawBrandPie(inputData, index){
 			let brandPieData = new Array();
-			brandPieData.push({nName:"avg_carbohydrates_100g",propotion:inputData.avg_carbohydrates_100g});
-			brandPieData.push({nName:"avg_cholesterol_100g",propotion:inputData.avg_cholesterol_100g});
 			brandPieData.push({nName:"avg_fat_100g",propotion:inputData.avg_fat_100g});
-			brandPieData.push({nName:"avg_fiber_100g",propotion:inputData.avg_fiber_100g});
-			brandPieData.push({nName:"avg_iron_100g",propotion:inputData.avg_iron_100g});
 			brandPieData.push({nName:"avg_omega_3_fat_100g",propotion:inputData.avg_omega_3_fat_100g});
-			brandPieData.push({nName:"avg_polyols_100g",propotion:inputData.avg_polyols_100g});
-			brandPieData.push({nName:"avg_proteins_100g",propotion:inputData.avg_proteins_100g});
-			brandPieData.push({nName:"avg_salt_100g",propotion:inputData.avg_salt_100g});
-			brandPieData.push({nName:"avg_serum_proteins_100g",propotion:inputData.avg_serum_proteins_100g});
-			brandPieData.push({nName:"avg_sodium_100g",propotion:inputData.avg_sodium_100g});
-			brandPieData.push({nName:"avg_starch_100g",propotion:inputData.avg_starch_100g});
-			brandPieData.push({nName:"avg_sugars_100g",propotion:inputData.avg_sugars_100g});
 			brandPieData.push({nName:"avg_trans_fat_100g",propotion:inputData.avg_trans_fat_100g});
+			brandPieData.push({nName:"avg_cholesterol_100g",propotion:inputData.avg_cholesterol_100g});
+			brandPieData.push({nName:"avg_carbohydrates_100g",propotion:inputData.avg_carbohydrates_100g});
+			brandPieData.push({nName:"avg_sugars_100g",propotion:inputData.avg_sugars_100g});
+			brandPieData.push({nName:"avg_starch_100g",propotion:inputData.avg_starch_100g});
+			brandPieData.push({nName:"avg_polyols_100g",propotion:inputData.avg_polyols_100g});
+			brandPieData.push({nName:"avg_fiber_100g",propotion:inputData.avg_fiber_100g});
+			brandPieData.push({nName:"avg_proteins_100g",propotion:inputData.avg_proteins_100g});
+			brandPieData.push({nName:"avg_serum_proteins_100g",propotion:inputData.avg_serum_proteins_100g});
+			brandPieData.push({nName:"avg_salt_100g",propotion:inputData.avg_salt_100g});
+			brandPieData.push({nName:"avg_sodium_100g",propotion:inputData.avg_sodium_100g});
 			brandPieData.push({nName:"avg_vitamin_a_100g",propotion:inputData.avg_vitamin_a_100g});
 			brandPieData.push({nName:"avg_vitamin_c_100g",propotion:inputData.avg_vitamin_c_100g});
+			brandPieData.push({nName:"avg_iron_100g",propotion:inputData.avg_iron_100g});
 			
 			var width = 200,
 			    height = 200,
@@ -559,7 +559,13 @@
 			    .attr("class", "arc");
 
 			arcs.append("path")
-			    .attr("fill", function(d, i) { return color(i); })
+			    .attr("fill", function(d, i) { 
+			    	if(i == index){
+			    		return color(0);
+			    	}else{
+			    		return color(1);	
+			    	}
+			    })
 			  .transition()
 			    .ease(d3.easeLinear)
 			    .duration(500)
@@ -571,13 +577,16 @@
 			    .attrTween("d", tweenDonut);
 
 
+			var legendData = new Array();
+			legendData.push(brandPieData[index]);
+			legendData.push({nName:"others",propotion:0});
 		   var legend = d3.select("#tooltip").append("svg")
 					.attr("id", "brandPieLegend")
 					.attr("class", "legend")
 					.attr("width", 200)
-					.attr("height", 20*16)
+					.attr("height", 20*2)
 				.selectAll("g")
-					.data(brandPieData)
+					.data(legendData)
 				.enter().append("g")
 					.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
