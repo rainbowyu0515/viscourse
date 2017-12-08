@@ -85,10 +85,10 @@ function draw() {
 	textSize(60*zoom);
 	text("Boston", 20*zoom, wh*zoom*0.45);
 	textSize(139*zoom);
-	text(weather.currently.temperature, 15*zoom, wh*zoom*0.54);
+	text(36.02, 15*zoom, wh*zoom*0.54);
 	fill(150);
 	textSize(30*zoom);
-	text(greetings[2], 20*zoom, wh*zoom*0.57);
+	text(greetings[0], 20*zoom, wh*zoom*0.57);
 	fill(255);
 	text("Humidity", 20*zoom, wh*zoom*0.62);
 	text("Wind Speed", 20*zoom+ww*zoom/5, wh*zoom*0.62);
