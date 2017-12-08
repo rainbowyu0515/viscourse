@@ -5,7 +5,9 @@ var longTick = 20;
 var shortTick = 10;
 
 function quadraticCurve(x1, y1, x2, y2, x3, y3, lineWidth, strokeColor) {
-	var canvas = document.getElementById('defaultCanvas0');
+	var canvas = document.getElementById('defaultCanvas0');var canvas = document.getElementById("defaultCanvas0");
+	canvas.style.width = "682px";
+	canvas.style.height = "512px";
 	var context = canvas.getContext('2d');
 
 	context.beginPath();
